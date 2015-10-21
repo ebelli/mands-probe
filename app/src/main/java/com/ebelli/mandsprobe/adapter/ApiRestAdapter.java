@@ -16,7 +16,7 @@ public class ApiRestAdapter {
 
     @Provides
     @Singleton
-    MandsApi getRestClient() {
+    public MandsApi getRestClient() {
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setEndpoint(ENDPOINT)
                 .setLogLevel(logLevel);
