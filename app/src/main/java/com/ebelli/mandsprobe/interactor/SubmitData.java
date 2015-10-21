@@ -3,6 +3,7 @@ package com.ebelli.mandsprobe.interactor;
 import com.ebelli.mandsprobe.adapter.ApiRestAdapter;
 import com.ebelli.mandsprobe.api.MandsApi;
 import com.ebelli.mandsprobe.model.Directions;
+import com.ebelli.mandsprobe.model.Message;
 
 import javax.inject.Inject;
 
@@ -13,28 +14,27 @@ import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
- * This class get the last directions of the alien space ship
- *
+ * This class submit the coordinates to find the alien star ship
  */
 @Module
-public class GetData {
+public class SubmitData {
 
     @Inject
     ApiRestAdapter apiRestAdapter;
 
-    Directions mDirections;
+    Message mMessage;
 
     @Provides
-    public Directions getData(String email) {
+    public Message submitData(String email, int x, int y) {
 
 
         MandsApi mandsApi = apiRestAdapter.getRestClient();
-        mandsApi.getData(email).subscribeOn(Schedulers.io())
+        mandsApi.submitData(email,x,y).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Directions>() {
+                .subscribe(new Action1<Message>() {
                     @Override
-                    public void call(Directions directions) {
-                        mDirections = directions;
+                    public void call(Message message) {
+                        mMessage = message;
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -43,6 +43,7 @@ public class GetData {
                     }
                 });
 
-        return mDirections;
+        return mMessage;
     }
+
 }
