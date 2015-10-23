@@ -4,10 +4,6 @@ import com.ebelli.mandsprobe.adapter.ApiRestAdapter;
 import com.ebelli.mandsprobe.api.MandsApi;
 import com.ebelli.mandsprobe.model.Directions;
 
-import javax.inject.Inject;
-
-import dagger.Module;
-import dagger.Provides;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -16,15 +12,11 @@ import rx.schedulers.Schedulers;
  * This class get the last directions of the alien space ship
  *
  */
-@Module
+
 public class GetData {
-
-    @Inject
     ApiRestAdapter apiRestAdapter;
-
     Directions mDirections;
 
-    @Provides
     public Directions getData(String email) {
 
 

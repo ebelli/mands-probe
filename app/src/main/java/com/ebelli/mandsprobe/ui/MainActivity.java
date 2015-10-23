@@ -1,39 +1,63 @@
 package com.ebelli.mandsprobe.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ebelli.mandsprobe.R;
+import com.ebelli.mandsprobe.presenter.MainPresenterImpl;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
+public class MainActivity extends AppCompatActivity implements MainView
+{
+
+    @InjectView(R.id.etEmail) EditText etEmail;
+    @InjectView(R.id.btnSearchSend) Button btnPay;
+    @InjectView(R.id.tilEmail) TextInputLayout tilEmail;
+
+    MainPresenterImpl mMainPresenter;
+
+    @OnClick(R.id.btnSearchSend)
+    void searchSend(){
+        mMainPresenter.validateEmail(etEmail.getText().toString());
+    }
+
+    @OnTextChanged(R.id.etEmail)
+    void hideError(){
+        hideMailError();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
+        mMainPresenter = new MainPresenterImpl(this);
+        tilEmail.setErrorEnabled(true);
+    }
+
+
+    @Override
+    public void showError(Exception error) {
+        Toast.makeText(getApplicationContext(),
+                error.getLocalizedMessage(),
+                Toast.LENGTH_LONG
+        ).show();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void showMailError() {
+        tilEmail.setError(getResources().getText(R.string.mailerror));
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void hideMailError() {
+        tilEmail.setError("");
     }
 }

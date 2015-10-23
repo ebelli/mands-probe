@@ -4,33 +4,48 @@ import com.ebelli.mandsprobe.interactor.GetData;
 import com.ebelli.mandsprobe.interactor.SubmitData;
 import com.ebelli.mandsprobe.model.Directions;
 import com.ebelli.mandsprobe.model.Message;
-
-import javax.inject.Inject;
-
-import dagger.Module;
+import com.ebelli.mandsprobe.ui.MainActivity;
+import com.ebelli.mandsprobe.util.DataValidator;
 
 /**
  * Presenter for the Main Activity
  */
 
-@Module
 public class MainPresenterImpl implements MainPresenter {
 
-    @Inject
-    GetData getData;
+    private MainActivity mMainActivity;
+    private GetData mGetData;
+    private SubmitData mSubmitData;
 
-    @Inject
-    SubmitData submitData;
 
-    @Override
-    public Directions getData(String email) {
-        getData.getData(email);
+
+    public MainPresenterImpl(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
+        mGetData = new GetData();
+        mSubmitData = new SubmitData();
+    }
+
+
+    private Directions getData(String email) {
+        mGetData.getData(email);
+        return null;
+    }
+
+    private Message submitData(String email,int x, int y) {
+        mSubmitData.submitData(email, x, y);
         return null;
     }
 
     @Override
-    public Message submitData(String email,int x, int y) {
-        submitData.submitData(email, x, y);
-        return null;
+    public void validateEmail(String email) {
+
+        if (DataValidator.isValidEmail(email)){
+            mMainActivity.hideMailError();
+           getData(email);
+        } else {
+            mMainActivity.showMailError();
+        }
+
     }
+
 }

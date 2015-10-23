@@ -8,6 +8,5 @@ import com.ebelli.mandsprobe.model.Message;
  */
 public interface MainPresenter {
 
-    Directions getData(String email);
-    Message submitData(String email, int x, int y);
+    void validateEmail(String email);
 }

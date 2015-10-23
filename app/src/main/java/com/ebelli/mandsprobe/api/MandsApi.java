@@ -12,10 +12,10 @@ import rx.Observable;
  */
 public interface MandsApi {
 
-    @GET("spaceprobe/getdata/{email}")
+    @GET("/spaceprobe/getdata/{email}")
     Observable<Directions> getData(@Path("email") String email);
 
-    @GET("spaceprobe/submitdata/{email}/{x}/{y}")
+    @GET("/spaceprobe/submitdata/{email}/{x}/{y}")
     Observable<Message> submitData(@Path("email") String email, int x, int y);
 
 }
